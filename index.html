@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الطلاب والموظفين</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* تصميم الهيدر */
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        /* تصميم قسم تسجيل الدخول */
+        .login-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            padding: 2rem 0;
+        }
+        
+        .login-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            width: auto;
+        }
+        
+        /* تصميم الأقسام المخفية */
+        .hidden {
+            display: none;
+        }
+        
+        /* تصميم لوحة التحكم */
+        .dashboard {
+            padding: 2rem 0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-message {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-info span {
+            margin-left: 0.5rem;
+        }
+        
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* تصميم الجداول */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        table th, table td {
+            padding: 0.75rem;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* تصميم النماذج */
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -0.5rem;
+        }
+        
+        .form-col {
+            flex: 1;
+            padding: 0 0.5rem;
+            min-width: 200px;
+        }
+        
+        /* تصميم التنبيهات */
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        
+        /* تصميم الاستجابة للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                margin-top: 1rem;
+            }
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">نظام إدارة الطلاب والموظفين</div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="home-link">الرئيسية</a></li>
+                    <li><a href="#" id="login-link">تسجيل الدخول</a></li>
+                    <li><a href="#" id="register-link">تسجيل موظف جديد</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- قسم تسجيل الدخول -->
+    <section id="login-section" class="login-section">
+        <div class="container">
+            <div class="login-form">
+                <h2>تسجيل الدخول</h2>
+                <div class="form-group">
+                    <label for="user-type">نوع المستخدم</label>
+                    <select id="user-type">
+                        <option value="student">طالب</option>
+                        <option value="employee">موظف</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="username">اسم المستخدم</label>
+                    <input type="text" id="username" placeholder="أدخل اسم المستخدم">
+                </div>
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور">
+                </div>
+                <button id="login-btn" class="btn">تسجيل الدخول</button>
+                <div id="login-message" class="alert alert-danger hidden" style="margin-top: 1rem;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم تسجيل الموظفين الجدد -->
+    <section id="register-section" class="login-section hidden">
+        <div class="container">
+            <div class="login-form">
+                <h2>تسجيل موظف جديد</h2>
+                <div class="form-group">
+                    <label for="reg-username">اسم المستخدم</label>
+                    <input type="text" id="reg-username" placeholder="أدخل اسم المستخدم">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">كلمة المرور</label>
+                    <input type="password" id="reg-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <div class="form-group">
+                    <label for="reg-confirm-password">تأكيد كلمة المرور</label>
+                    <input type="password" id="reg-confirm-password" placeholder="أكد كلمة المرور">
+                </div>
+                <div class="form-group">
+                    <label for="reg-name">الاسم الكامل</label>
+                    <input type="text" id="reg-name" placeholder="أدخل الاسم الكامل">
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">البريد الإلكتروني</label>
+                    <input type="email" id="reg-email" placeholder="أدخل البريد الإلكتروني">
+                </div>
+                <div class="form-group">
+                    <label for="reg-role">الدور</label>
+                    <select id="reg-role">
+                        <option value="admin">مدير النظام</option>
+                        <option value="teacher">معلم</option>
+                        <option value="employee">موظف إداري</option>
+                    </select>
+                </div>
+                <button id="register-btn" class="btn btn-success">تسجيل الموظف</button>
+                <button id="back-to-login" class="btn btn-warning" style="margin-top: 0.5rem;">العودة لتسجيل الدخول</button>
+                <div id="register-message" class="alert hidden" style="margin-top: 1rem;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- لوحة تحكم الطالب -->
+    <section id="student-dashboard" class="dashboard hidden">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="welcome-message">مرحباً، <span id="student-name"></span></h2>
+                <div class="user-info">
+                    <button id="student-change-password" class="btn btn-success btn-small">تغيير كلمة المرور</button>
+                    <button id="student-logout" class="btn btn-danger btn-small">تسجيل الخروج</button>
+                </div>
+            </div>
+            
+            <div class="dashboard-content">
+                <div class="card">
+                    <h3>العلامات</h3>
+                    <table id="student-grades-table">
+                        <thead>
+                            <tr>
+                                <th>المادة</th>
+                                <th>العلامة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملؤها بالبيانات -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- لوحة تحكم الموظف -->
+    <section id="employee-dashboard" class="dashboard hidden">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="welcome-message">مرحباً، <span id="employee-name"></span> (<span id="employee-role"></span>)</h2>
+                <div class="user-info">
+                    <button id="employee-logout" class="btn btn-danger btn-small">تسجيل الخروج</button>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="students-tab">إدارة الطلاب</div>
+                <div class="tab" data-tab="grades-tab">إدارة العلامات</div>
+                <div class="tab" data-tab="employees-tab" id="employees-tab-header">إدارة الموظفين</div>
+            </div>
+            
+            <!-- تبويب إدارة الطلاب -->
+            <div class="tab-content active" id="students-tab">
+                <div class="dashboard-content">
+                    <div class="card">
+                        <h3>تسجيل طالب جديد</h3>
+                        <div class="form-group">
+                            <label for="new-student-username">اسم المستخدم</label>
+                            <input type="text" id="new-student-username" placeholder="اسم المستخدم للطالب">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-student-password">كلمة المرور</label>
+                            <input type="password" id="new-student-password" placeholder="كلمة المرور للطالب">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-student-name">الاسم الكامل</label>
+                            <input type="text" id="new-student-name" placeholder="الاسم الكامل للطالب">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-student-email">البريد الإلكتروني</label>
+                            <input type="email" id="new-student-email" placeholder="البريد الإلكتروني للطالب">
+                        </div>
+                        <button id="add-student" class="btn">تسجيل الطالب</button>
+                        <div id="student-add-message" class="alert hidden" style="margin-top: 1rem;"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>تعديل بيانات الطلاب</h3>
+                        <div class="form-group">
+                            <label for="edit-student-select">اختر الطالب</label>
+                            <select id="edit-student-select">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-name">الاسم</label>
+                            <input type="text" id="edit-name" placeholder="الاسم الكامل">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-email">البريد الإلكتروني</label>
+                            <input type="email" id="edit-email" placeholder="البريد الإلكتروني">
+                        </div>
+                        <button id="update-student" class="btn">تحديث البيانات</button>
+                        <div id="update-message" class="alert hidden" style="margin-top: 1rem;"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>قائمة الطلاب</h3>
+                        <table id="students-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم المستخدم</th>
+                                    <th>الاسم الكامل</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب إدارة العلامات -->
+            <div class="tab-content" id="grades-tab">
+                <div class="dashboard-content">
+                    <div class="card">
+                        <h3>إدخال العلامات</h3>
+                        <div class="form-group">
+                            <label for="student-select">اختر الطالب</label>
+                            <select id="student-select">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">المادة</label>
+                            <input type="text" id="subject" placeholder="أدخل اسم المادة">
+                        </div>
+                        <div class="form-group">
+                            <label for="grade">العلامة</label>
+                            <input type="number" id="grade" placeholder="أدخل العلامة" min="0" max="100">
+                        </div>
+                        <button id="add-grade" class="btn">إضافة العلامة</button>
+                        <div id="grade-message" class="alert hidden" style="margin-top: 1rem;"></div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>علامات الطلاب</h3>
+                        <div class="form-group">
+                            <label for="view-grades-student">اختر الطالب</label>
+                            <select id="view-grades-student">
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </select>
+                        </div>
+                        <table id="all-grades-table">
+                            <thead>
+                                <tr>
+                                    <th>المادة</th>
+                                    <th>العلامة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب إدارة الموظفين (للمدير فقط) -->
+            <div class="tab-content" id="employees-tab">
+                <div class="dashboard-content">
+                    <div class="card">
+                        <h3>قائمة الموظفين</h3>
+                        <table id="employees-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم المستخدم</th>
+                                    <th>الاسم الكامل</th>
+                                    <th>البريد الإلكتروني</th>
+                                    <th>الدور</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملؤها بالبيانات -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- نموذج تغيير كلمة المرور -->
+    <section id="change-password-modal" class="login-section hidden">
+        <div class="container">
+            <div class="login-form">
+                <h2>تغيير كلمة المرور</h2>
+                <div class="form-group">
+                    <label for="current-password">كلمة المرور الحالية</label>
+                    <input type="password" id="current-password" placeholder="أدخل كلمة المرور الحالية">
+                </div>
+                <div class="form-group">
+                    <label for="new-password">كلمة المرور الجديدة</label>
+                    <input type="password" id="new-password" placeholder="أدخل كلمة المرور الجديدة">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">تأكيد كلمة المرور</label>
+                    <input type="password" id="confirm-password" placeholder="أكد كلمة المرور الجديدة">
+                </div>
+                <button id="save-password" class="btn">حفظ التغييرات</button>
+                <button id="cancel-password" class="btn btn-danger" style="margin-top: 0.5rem;">إلغاء</button>
+                <div id="password-message" class="alert hidden" style="margin-top: 1rem;"></div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // نظام إدارة البيانات الدائمة
+        const DataManager = {
+            // تحميل البيانات من localStorage
+            loadData() {
+                const savedUsers = localStorage.getItem('managementUsers');
+                const savedGrades = localStorage.getItem('managementGrades');
+                
+                return {
+                    users: savedUsers ? JSON.parse(savedUsers) : {
+                        student: [
+                            { username: "student1", password: "123456", name: "أحمد محمد", email: "ahmed@example.com" },
+                            { username: "student2", password: "123456", name: "فاطمة علي", email: "fatima@example.com" }
+                        ],
+                        employee: [
+                            { username: "admin", password: "admin123", name: "مدير النظام", email: "admin@example.com", role: "admin" },
+                            { username: "teacher1", password: "123456", name: "محمد أحمد", email: "mohamed@example.com", role: "teacher" },
+                            { username: "employee1", password: "123456", name: "سارة خالد", email: "sara@example.com", role: "employee" }
+                        ]
+                    },
+                    grades: savedGrades ? JSON.parse(savedGrades) : {
+                        "student1": [
+                            { subject: "الرياضيات", grade: 85 },
+                            { subject: "اللغة العربية", grade: 90 },
+                            { subject: "العلوم", grade: 78 }
+                        ],
+                        "student2": [
+                            { subject: "الرياضيات", grade: 92 },
+                            { subject: "اللغة العربية", grade: 88 },
+                            { subject: "العلوم", grade: 95 }
+                        ]
+                    }
+                };
+            },
+
+            // حفظ البيانات في localStorage
+            saveData() {
+                localStorage.setItem('managementUsers', JSON.stringify(users));
+                localStorage.setItem('managementGrades', JSON.stringify(grades));
+            }
+        };
+
+        // تحميل البيانات عند بدء التشغيل
+        let appData = DataManager.loadData();
+        let users = appData.users;
+        let grades = appData.grades;
+
+        // متغيرات لتتبع حالة النظام
+        let currentUser = null;
+        let currentUserType = null;
+
+        // عناصر DOM
+        const loginSection = document.getElementById('login-section');
+        const registerSection = document.getElementById('register-section');
+        const studentDashboard = document.getElementById('student-dashboard');
+        const employeeDashboard = document.getElementById('employee-dashboard');
+        const changePasswordModal = document.getElementById('change-password-modal');
+        
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const backToLoginBtn = document.getElementById('back-to-login');
+        const studentLogoutBtn = document.getElementById('student-logout');
+        const employeeLogoutBtn = document.getElementById('employee-logout');
+        const studentChangePasswordBtn = document.getElementById('student-change-password');
+        const cancelPasswordBtn = document.getElementById('cancel-password');
+        const savePasswordBtn = document.getElementById('save-password');
+        
+        const loginMessage = document.getElementById('login-message');
+        const registerMessage = document.getElementById('register-message');
+        const gradeMessage = document.getElementById('grade-message');
+        const updateMessage = document.getElementById('update-message');
+        const passwordMessage = document.getElementById('password-message');
+        const studentAddMessage = document.getElementById('student-add-message');
+
+        // أحداث التنقل
+        document.getElementById('register-link').addEventListener('click', showRegister);
+        backToLoginBtn.addEventListener('click', showLogin);
+
+        // أحداث النقر
+        loginBtn.addEventListener('click', handleLogin);
+        registerBtn.addEventListener('click', handleRegister);
+        studentLogoutBtn.addEventListener('click', handleLogout);
+        employeeLogoutBtn.addEventListener('click', handleLogout);
+        studentChangePasswordBtn.addEventListener('click', showChangePassword);
+        cancelPasswordBtn.addEventListener('click', hideChangePassword);
+        savePasswordBtn.addEventListener('click', changePassword);
+        
+        // إضافة العلامات (للموظف)
+        document.getElementById('add-grade').addEventListener('click', addGrade);
+        
+        // إضافة طالب جديد (للموظف)
+        document.getElementById('add-student').addEventListener('click', addStudent);
+        
+        // تحديث بيانات الطالب (للموظف)
+        document.getElementById('update-student').addEventListener('click', updateStudent);
+        
+        // عند تغيير اختيار الطالب في تعديل البيانات
+        document.getElementById('edit-student-select').addEventListener('change', populateStudentData);
+        
+        // عند تغيير اختيار الطالب لعرض العلامات
+        document.getElementById('view-grades-student').addEventListener('change', viewStudentGrades);
+        
+        // نظام التبويبات
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // إزالة النشاط من جميع التبويبات
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // تفعيل التبويب المحدد
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // وظيفة تسجيل الدخول
+        function handleLogin() {
+            const userType = document.getElementById('user-type').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // التحقق من صحة بيانات الدخول
+            const user = users[userType].find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                currentUserType = userType;
+                showDashboard();
+                loginMessage.classList.add('hidden');
+            } else {
+                loginMessage.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
+                loginMessage.classList.remove('hidden');
+            }
+        }
+
+        // وظيفة تسجيل الموظفين الجدد
+        function handleRegister() {
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const role = document.getElementById('reg-role').value;
+            
+            // التحقق من البيانات
+            if (!username || !password || !confirmPassword || !name || !email) {
+                showMessage(registerMessage, 'يرجى ملء جميع الحقول', 'danger');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage(registerMessage, 'كلمة المرور غير متطابقة', 'danger');
+                return;
+            }
+            
+            // التحقق من عدم وجود اسم مستخدم مكرر
+            if (users.employee.find(u => u.username === username)) {
+                showMessage(registerMessage, 'اسم المستخدم موجود مسبقاً', 'danger');
+                return;
+            }
+            
+            // إضافة الموظف الجديد
+            users.employee.push({
+                username,
+                password,
+                name,
+                email,
+                role
+            });
+            
+            // حفظ البيانات في localStorage
+            DataManager.saveData();
+            
+            showMessage(registerMessage, 'تم تسجيل الموظف الجديد بنجاح', 'success');
+            
+            // مسح الحقول
+            document.getElementById('reg-username').value = '';
+            document.getElementById('reg-password').value = '';
+            document.getElementById('reg-confirm-password').value = '';
+            document.getElementById('reg-name').value = '';
+            document.getElementById('reg-email').value = '';
+            
+            // العودة لتسجيل الدخول بعد ثانيتين
+            setTimeout(() => {
+                showLogin();
+            }, 2000);
+        }
+
+        // وظيفة تسجيل الخروج
+        function handleLogout() {
+            currentUser = null;
+            currentUserType = null;
+            showLogin();
+            
+            // مسح حقول الإدخال
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // عرض لوحة التحكم المناسبة
+        function showDashboard() {
+            loginSection.classList.add('hidden');
+            registerSection.classList.add('hidden');
+            
+            if (currentUserType === 'student') {
+                studentDashboard.classList.remove('hidden');
+                employeeDashboard.classList.add('hidden');
+                
+                // تعبئة بيانات الطالب
+                document.getElementById('student-name').textContent = currentUser.name;
+                
+                // تعبئة جدول العلامات
+                const gradesTable = document.getElementById('student-grades-table').getElementsByTagName('tbody')[0];
+                gradesTable.innerHTML = '';
+                
+                if (grades[currentUser.username]) {
+                    grades[currentUser.username].forEach(grade => {
+                        const row = gradesTable.insertRow();
+                        const subjectCell = row.insertCell(0);
+                        const gradeCell = row.insertCell(1);
+                        
+                        subjectCell.textContent = grade.subject;
+                        gradeCell.textContent = grade.grade;
+                    });
+                }
+                
+            } else if (currentUserType === 'employee') {
+                studentDashboard.classList.add('hidden');
+                employeeDashboard.classList.remove('hidden');
+                
+                // تعبئة بيانات الموظف
+                document.getElementById('employee-name').textContent = currentUser.name;
+                document.getElementById('employee-role').textContent = getRoleName(currentUser.role);
+                
+                // إظهار أو إخفاء تبويب إدارة الموظفين حسب الصلاحيات
+                const employeesTabHeader = document.getElementById('employees-tab-header');
+                if (currentUser.role === 'admin') {
+                    employeesTabHeader.classList.remove('hidden');
+                } else {
+                    employeesTabHeader.classList.add('hidden');
+                }
+                
+                // تعبئة قوائم الطلاب
+                populateStudentLists();
+                
+                // تعبئة قائمة الموظفين (للمدير فقط)
+                if (currentUser.role === 'admin') {
+                    populateEmployeesList();
+                }
+            }
+        }
+
+        // الحصول على اسم الدور
+        function getRoleName(role) {
+            const roles = {
+                'admin': 'مدير النظام',
+                'teacher': 'معلم',
+                'employee': 'موظف إداري'
+            };
+            return roles[role] || role;
+        }
+
+        // تعبئة قوائم الطلاب (للموظف)
+        function populateStudentLists() {
+            const studentSelect = document.getElementById('student-select');
+            const editStudentSelect = document.getElementById('edit-student-select');
+            const viewGradesStudent = document.getElementById('view-grades-student');
+            const studentsTable = document.getElementById('students-table').getElementsByTagName('tbody')[0];
+            
+            // مسح المحتوى الحالي
+            studentSelect.innerHTML = '';
+            editStudentSelect.innerHTML = '';
+            viewGradesStudent.innerHTML = '';
+            studentsTable.innerHTML = '';
+            
+            // إضافة الطلاب إلى القوائم
+            users.student.forEach(student => {
+                // قائمة اختيار الطلاب لإدخال العلامات
+                const option1 = document.createElement('option');
+                option1.value = student.username;
+                option1.textContent = student.name;
+                studentSelect.appendChild(option1);
+                
+                // قائمة اختيار الطلاب لتعديل البيانات
+                const option2 = document.createElement('option');
+                option2.value = student.username;
+                option2.textContent = student.name;
+                editStudentSelect.appendChild(option2);
+                
+                // قائمة اختيار الطلاب لعرض العلامات
+                const option3 = document.createElement('option');
+                option3.value = student.username;
+                option3.textContent = student.name;
+                viewGradesStudent.appendChild(option3);
+                
+                // جدول الطلاب
+                const row = studentsTable.insertRow();
+                const usernameCell = row.insertCell(0);
+                const nameCell = row.insertCell(1);
+                const emailCell = row.insertCell(2);
+                const actionsCell = row.insertCell(3);
+                
+                usernameCell.textContent = student.username;
+                nameCell.textContent = student.name;
+                emailCell.textContent = student.email;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'حذف';
+                deleteBtn.className = 'btn btn-danger btn-small';
+                deleteBtn.addEventListener('click', () => deleteStudent(student.username));
+                actionsCell.appendChild(deleteBtn);
+            });
+        }
+
+        // تعبئة قائمة الموظفين (للمدير فقط)
+        function populateEmployeesList() {
+            const employeesTable = document.getElementById('employees-table').getElementsByTagName('tbody')[0];
+            employeesTable.innerHTML = '';
+            
+            users.employee.forEach(employee => {
+                const row = employeesTable.insertRow();
+                const usernameCell = row.insertCell(0);
+                const nameCell = row.insertCell(1);
+                const emailCell = row.insertCell(2);
+                const roleCell = row.insertCell(3);
+                const actionsCell = row.insertCell(4);
+                
+                usernameCell.textContent = employee.username;
+                nameCell.textContent = employee.name;
+                emailCell.textContent = employee.email;
+                roleCell.textContent = getRoleName(employee.role);
+                
+                // لا يمكن حذف المدير الحالي
+                if (employee.username !== currentUser.username) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'حذف';
+                    deleteBtn.className = 'btn btn-danger btn-small';
+                    deleteBtn.addEventListener('click', () => deleteEmployee(employee.username));
+                    actionsCell.appendChild(deleteBtn);
+                }
+            });
+        }
+
+        // تعبئة بيانات الطالب عند اختياره (للموظف)
+        function populateStudentData() {
+            const studentUsername = document.getElementById('edit-student-select').value;
+            const student = users.student.find(s => s.username === studentUsername);
+            
+            if (student) {
+                document.getElementById('edit-name').value = student.name;
+                document.getElementById('edit-email').value = student.email;
+            }
+        }
+
+        // عرض علامات الطالب المحدد
+        function viewStudentGrades() {
+            const studentUsername = document.getElementById('view-grades-student').value;
+            const gradesTable = document.getElementById('all-grades-table').getElementsByTagName('tbody')[0];
+            gradesTable.innerHTML = '';
+            
+            if (grades[studentUsername]) {
+                grades[studentUsername].forEach((grade, index) => {
+                    const row = gradesTable.insertRow();
+                    const subjectCell = row.insertCell(0);
+                    const gradeCell = row.insertCell(1);
+                    const actionsCell = row.insertCell(2);
+                    
+                    subjectCell.textContent = grade.subject;
+                    gradeCell.textContent = grade.grade;
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'حذف';
+                    deleteBtn.className = 'btn btn-danger btn-small';
+                    deleteBtn.addEventListener('click', () => deleteGrade(studentUsername, index));
+                    actionsCell.appendChild(deleteBtn);
+                });
+            }
+        }
+
+        // إضافة طالب جديد (للموظف)
+        function addStudent() {
+            const username = document.getElementById('new-student-username').value;
+            const password = document.getElementById('new-student-password').value;
+            const name = document.getElementById('new-student-name').value;
+            const email = document.getElementById('new-student-email').value;
+            
+            if (!username || !password || !name || !email) {
+                showMessage(studentAddMessage, 'يرجى ملء جميع الحقول', 'danger');
+                return;
+            }
+            
+            // التحقق من عدم وجود اسم مستخدم مكرر
+            if (users.student.find(s => s.username === username)) {
+                showMessage(studentAddMessage, 'اسم المستخدم موجود مسبقاً', 'danger');
+                return;
+            }
+            
+            // إضافة الطالب الجديد
+            users.student.push({
+                username,
+                password,
+                name,
+                email
+            });
+            
+            // إنشاء سجل فارغ للعلامات
+            grades[username] = [];
+            
+            // حفظ البيانات في localStorage
+            DataManager.saveData();
+            
+            showMessage(studentAddMessage, 'تم تسجيل الطالب الجديد بنجاح', 'success');
+            
+            // مسح الحقول
+            document.getElementById('new-student-username').value = '';
+            document.getElementById('new-student-password').value = '';
+            document.getElementById('new-student-name').value = '';
+            document.getElementById('new-student-email').value = '';
+            
+            // تحديث القوائم
+            populateStudentLists();
+        }
+
+        // إضافة علامة جديدة (للموظف)
+        function addGrade() {
+            const studentUsername = document.getElementById('student-select').value;
+            const subject = document.getElementById('subject').value;
+            const gradeValue = document.getElementById('grade').value;
+            
+            if (!subject || !gradeValue) {
+                showMessage(gradeMessage, 'يرجى ملء جميع الحقول', 'danger');
+                return;
+            }
+            
+            if (!grades[studentUsername]) {
+                grades[studentUsername] = [];
+            }
+            
+            grades[studentUsername].push({
+                subject: subject,
+                grade: parseInt(gradeValue)
+            });
+            
+            // حفظ البيانات في localStorage
+            DataManager.saveData();
+            
+            showMessage(gradeMessage, 'تم إضافة العلامة بنجاح', 'success');
+            
+            // مسح الحقول
+            document.getElementById('subject').value = '';
+            document.getElementById('grade').value = '';
+            
+            // تحديث عرض العلامات إذا كان الطالب المحدد هو نفسه
+            if (document.getElementById('view-grades-student').value === studentUsername) {
+                viewStudentGrades();
+            }
+        }
+
+        // تحديث بيانات الطالب (للموظف)
+        function updateStudent() {
+            const studentUsername = document.getElementById('edit-student-select').value;
+            const name = document.getElementById('edit-name').value;
+            const email = document.getElementById('edit-email').value;
+            
+            if (!name || !email) {
+                showMessage(updateMessage, 'يرجى ملء جميع الحقول', 'danger');
+                return;
+            }
+            
+            const studentIndex = users.student.findIndex(s => s.username === studentUsername);
+            if (studentIndex !== -1) {
+                users.student[studentIndex].name = name;
+                users.student[studentIndex].email = email;
+                
+                // حفظ البيانات في localStorage
+                DataManager.saveData();
+                
+                showMessage(updateMessage, 'تم تحديث بيانات الطالب بنجاح', 'success');
+                
+                // تحديث القوائم والجداول
+                populateStudentLists();
+            }
+        }
+
+        // حذف طالب (للموظف)
+        function deleteStudent(username) {
+            if (confirm('هل أنت متأكد من حذف هذا الطالب؟')) {
+                users.student = users.student.filter(s => s.username !== username);
+                delete grades[username];
+                
+                // حفظ البيانات في localStorage
+                DataManager.saveData();
+                
+                // تحديث القوائم والجداول
+                populateStudentLists();
+                
+                // إذا كان الطالب المحدد هو الذي تم حذفه، مسح حقول التعديل
+                if (document.getElementById('edit-student-select').value === username) {
+                    document.getElementById('edit-name').value = '';
+                    document.getElementById('edit-email').value = '';
+                }
+            }
+        }
+
+        // حذف موظف (للمدير فقط)
+        function deleteEmployee(username) {
+            if (confirm('هل أنت متأكد من حذف هذا الموظف؟')) {
+                users.employee = users.employee.filter(e => e.username !== username);
+                
+                // حفظ البيانات في localStorage
+                DataManager.saveData();
+                
+                populateEmployeesList();
+            }
+        }
+
+        // حذف علامة
+        function deleteGrade(studentUsername, gradeIndex) {
+            if (confirm('هل أنت متأكد من حذف هذه العلامة؟')) {
+                grades[studentUsername].splice(gradeIndex, 1);
+                
+                // حفظ البيانات في localStorage
+                DataManager.saveData();
+                
+                viewStudentGrades();
+            }
+        }
+
+        // عرض نموذج تغيير كلمة المرور
+        function showChangePassword() {
+            changePasswordModal.classList.remove('hidden');
+            studentDashboard.classList.add('hidden');
+        }
+
+        // إخفاء نموذج تغيير كلمة المرور
+        function hideChangePassword() {
+            changePasswordModal.classList.add('hidden');
+            
+            if (currentUserType === 'student') {
+                studentDashboard.classList.remove('hidden');
+            }
+            
+            // مسح الحقول
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+            passwordMessage.classList.add('hidden');
+        }
+
+        // تغيير كلمة المرور
+        function changePassword() {
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showMessage(passwordMessage, 'يرجى ملء جميع الحقول', 'danger');
+                return;
+            }
+            
+            if (currentPassword !== currentUser.password) {
+                showMessage(passwordMessage, 'كلمة المرور الحالية غير صحيحة', 'danger');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showMessage(passwordMessage, 'كلمة المرور الجديدة غير متطابقة', 'danger');
+                return;
+            }
+            
+            // تحديث كلمة المرور
+            currentUser.password = newPassword;
+            
+            // حفظ البيانات في localStorage
+            DataManager.saveData();
+            
+            showMessage(passwordMessage, 'تم تغيير كلمة المرور بنجاح', 'success');
+            
+            // إخفاء النموذج بعد ثانيتين
+            setTimeout(() => {
+                hideChangePassword();
+            }, 2000);
+        }
+
+        // عرض صفحة تسجيل الدخول
+        function showLogin() {
+            loginSection.classList.remove('hidden');
+            registerSection.classList.add('hidden');
+            studentDashboard.classList.add('hidden');
+            employeeDashboard.classList.add('hidden');
+            changePasswordModal.classList.add('hidden');
+        }
+
+        // عرض صفحة تسجيل الموظفين
+        function showRegister() {
+            loginSection.classList.add('hidden');
+            registerSection.classList.remove('hidden');
+            studentDashboard.classList.add('hidden');
+            employeeDashboard.classList.add('hidden');
+            changePasswordModal.classList.add('hidden');
+        }
+
+        // عرض رسالة
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `alert alert-${type}`;
+            element.classList.remove('hidden');
+        }
+
+        // تهيئة النظام
+        function init() {
+            showLogin();
+        }
+
+        // تشغيل النظام عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
